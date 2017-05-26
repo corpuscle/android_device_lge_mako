@@ -49,8 +49,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	device/lge/mako/WCNSS_cfg.dat:system/vendor/firmware/wlan/prima/WCNSS_cfg.dat \
 	device/lge/mako/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
-	device/lge/mako/WCNSS_qcom_wlan_nv.bin:system/etc/wifi/WCNSS_qcom_wlan_nv.bin \
-	device/lge/mako/init.mako.wifi.sh:system/etc/init.mako.wifi.sh
+	device/lge/mako/WCNSS_qcom_wlan_nv.bin:system/etc/wifi/WCNSS_qcom_wlan_nv.bin
 
 PRODUCT_COPY_FILES += \
 	device/lge/mako/audio_policy.conf:system/etc/audio_policy.conf
@@ -73,6 +72,7 @@ PRODUCT_COPY_FILES += \
 	device/lge/mako/media_codecs.xml:system/etc/media_codecs.xml
 
 PRODUCT_COPY_FILES += \
+	device/lge/mako/init_wlan_bt.sh:system/etc/init_wlan_bt.sh \
 	device/lge/mako/unblock_wakelock.sh:system/etc/unblock_wakelock.sh
 
 # Prebuilt kl and kcm keymaps
@@ -189,9 +189,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
 	power.msm8960
-
-PRODUCT_COPY_FILES += \
-	device/lge/mako/init.mako.bt.sh:system/etc/init.mako.bt.sh
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.qualcomm.bt.hci_transport=smd \
