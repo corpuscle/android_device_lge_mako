@@ -72,6 +72,9 @@ PRODUCT_COPY_FILES += \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
 	device/lge/mako/media_codecs.xml:system/etc/media_codecs.xml
 
+PRODUCT_COPY_FILES += \
+	device/lge/mako/unblock_wakelock.sh:system/etc/unblock_wakelock.sh
+
 # Prebuilt kl and kcm keymaps
 PRODUCT_COPY_FILES += \
 	device/lge/mako/apq8064-tabla-snd-card_Button_Jack.kl:system/usr/keylayout/apq8064-tabla-snd-card_Button_Jack.kl \
@@ -191,7 +194,8 @@ PRODUCT_COPY_FILES += \
 	device/lge/mako/init.mako.bt.sh:system/etc/init.mako.bt.sh
 
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.qualcomm.bt.hci_transport=smd
+	ro.qualcomm.bt.hci_transport=smd \
+	ro.qc.sensors.wl_dis=true
 
 ifeq ($(findstring tiny, $(TARGET_PRODUCT)),)
 PRODUCT_PACKAGES += \
@@ -287,8 +291,4 @@ PRODUCT_PACKAGES += \
     libOmxQcelp13Enc
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
-
-# This is the mako-specific audio package
-$(call inherit-product, frameworks/base/data/sounds/AudioPackage10.mk)
-
 $(call inherit-product, hardware/qcom/msm8960/msm8960.mk)

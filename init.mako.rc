@@ -89,9 +89,9 @@ on boot
     symlink /dev/graphics/fb1 /dev/graphics/hdmi
 
     # Remove write permissions to video related nodes
-    chmod 0664 /sys/devices/virtual/graphics/fb1/hpd
-    chmod 0664 /sys/devices/virtual/graphics/fb1/video_mode
-    chmod 0664 /sys/devices/virtual/graphics/fb1/format_3d
+    chmod 0666 /sys/devices/virtual/graphics/fb1/hpd
+    chmod 0666 /sys/devices/virtual/graphics/fb1/video_mode
+    chmod 0666 /sys/devices/virtual/graphics/fb1/format_3d
 
     # Change owner and group for media server and surface flinger
     chown system system /sys/devices/virtual/graphics/fb1/format_3d
@@ -175,7 +175,6 @@ on post-fs-data
     mkdir /data/system/sensors
     chmod 665 /data/system/sensors
     write /data/system/sensors/settings 1
-    restorecon /data/system/sensors/settings
     chmod 660 /data/system/sensors/settings
 
     # AKM setting data
@@ -201,7 +200,12 @@ on post-fs-data
     rm /data/local/tmp/adreno_config.txt
 
     # LED On/Off synchronization
-    chown system system /sys/class/leds/red/device/lock
+    chown system input /sys/class/leds/red/device/lock
+    chmod 0664 /sys/class/leds/red/device/lock
+
+    # backlight
+    chmod 0666 /sys/class/backlight/lm3530/brightness
+    chown system system /sys/class/backlight/lm3530/brightness
 
     # communicate with mpdecision and thermald
     mkdir /dev/socket/mpdecision 2770 root system
@@ -357,7 +361,7 @@ service netmgrd /system/bin/netmgrd
     group radio
 
 service sensors /system/bin/sensors.qcom
-    class late_start
+    class main
     user root
     group root radio system
 
@@ -420,7 +424,7 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
 
 on property:ro.data.large_tcp_window_size=true
     # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
-    write /proc/sys/net/ipv4/tcp_adv_win_scale  2
+    write /proc/sys/net/ipv4/tcp_adv_win_scale  1
 
 service charger /sbin/healthd -c
     class charger
@@ -451,6 +455,9 @@ service wcnss_init /system/bin/sh /system/etc/init.mako.wifi.sh
     group system wifi
     seclabel u:r:conn_init:s0
     oneshot
+
+on property:init.svc.sensorservice=running
+    start unblock_wakelock
 
 service bdAddrLoader /system/bin/bdAddrLoader -f /persist/bluetooth/.bdaddr -h -x
     class main
