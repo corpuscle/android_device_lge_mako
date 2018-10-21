@@ -281,6 +281,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     qcom.hw.aac.encoder=true
 
+# Time sync
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.delta_time.enable=true
+
 PRODUCT_PACKAGES += \
     libOmxAacEnc \
     libOmxAmrEnc \
